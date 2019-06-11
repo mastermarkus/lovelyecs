@@ -38,11 +38,11 @@ ecs.registerPrefab("player_prefab", {
   position = {x = 50, y = 50};
   velocity = {x = 0, y = 0};
   keyboard_input = {
-    keys_down = {
-    arrow_up = false,
-    arrow_down = true,
-    arrow_left = false,
-    arrow_right = false
+      keys_down = {
+      arrow_up = false,
+      arrow_down = true,
+      arrow_left = false,
+      arrow_right = false
     }
   }
 })
@@ -59,7 +59,7 @@ local entity_2 = ecs.newEntity(world)
 --let's make entity_2 a little bit faster than entity_1
 ecs.setComponent(world, entity_2, "velocity", {x =3200, y = 3300})
 
---if return_component's is true it's gonna directly return etity_id + (the components) specified in filter
+--if return_component's is true it's gonna directly return entity_id + (the components) specified in filter
 local return_components = true
 local filter = {"position", "velocity", "keyboard_input"}
 
