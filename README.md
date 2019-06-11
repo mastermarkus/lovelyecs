@@ -79,3 +79,6 @@ end
 
 ### Installation
 Just clone or download this repository as .zip file and extract the "lovelyecs.lua" file to location you want.
+
+### Testing
+lovely-ecs uses [luaunit](https://github.com/bluebird75/luaunit) for testing. To run the tests, download Lua and [luaunit](https://github.com/bluebird75/luaunit), copy or take out the "luaunit.lua" file. Now run the lua command inside you project root folder followed by path to "test_lovelyecs.lua". For example if your project root folder name is "game" and both luaunit.lua and lovelyecs.lua are under folder called "thirdparty", run the following command -> "lua lua .\thirdparty\lovelyecs\test_lovelyecs.lua"
