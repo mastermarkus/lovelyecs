@@ -1,31 +1,41 @@
 # lovely-ecs
 
+# What is Entity component system in the first place?
+If you are new to ECS, take a look at Wikipedia page: https://en.wikipedia.org/wiki/Entity_component_system. If you still didn't understand what it is, i recommend to keep reading and there are code snippets down below. Also there's ***examples/*** folder in the repository.
+
 # What is lovely-ecs?
 
 **lovely-ecs** is simple to use entity component system for Lua scripting language. Have you tried to find easy to use Lua ECS library that doesn't force you to install some third party libraries, isn't already tied to some other framework or isn't lacking some essential features. Well, **lovely-ecs** is the answer. lovely-ecs is single file library that works with Lua 5.1 and up.
 
 ## Basic overview
-**lovely-ecs** has 4 main types: Entities, Worlds, Systems and Prefabs. Both Worlds and Entities are just simple integer numbers, Systems that are simply functions and finally Prefabs that are just group of components. We will look into it more down below how it all works and comes togheter to give you better idea.
+**lovely-ecs** has 4 main types: Entities, Components, Worlds and Systems.
 
 
 ### Entity
-Entity is just collection of components and to access these components lovely-ecs gives you unique id when you create new entity. On top of that lovely-ecs gives you 4 powerful iterator functions that systems could use to iterate over entities with specfic components.
+In game Entity could really be anything; Animal, Monster, NPC and also Player controlled by Human or AI. What makes up entity and give's it logic, graphics, physics etc... are components, these are the building block's of entity.
+
+
+### Components
+Component is just variable with value that's part of entity. You are free to create any components with any name and value you like. ***lovely-ecs*** also allows you to group components together and create prefabs. Example components: Position, Velocity, Health etc...
 
 
 ### World
-World is container where entities live and die, but also where systems act and interact on with entities.
+World is container where entities live in. You can create multiple worlds.
 
 
 ### System
-In lovely-ecs system is just simple LUA function, there's nothing special about systems they are not built into the library, which make's it much more flexible. Don't worry if you didn't understad, we have few good examples down below.
-
-
-### Prefab
-Prefab allow you to group togheter different components, that could be added to entity.
+System is piece of code or function that goes through all the entities in world and components using what's called **Iterator(s)**, it's very important because it's what give's life to your entitity. Systems checks entities what components they have and acts accordingly. For example you could have system called "player_movement", this system would be responsible for getting all the entities with components named "keyboard_input", "position" and "velocity" and moveing the player everytime they press some arrow-key on keyboard. Remember you have full control what you want to name your component's, these were just made up component names.
 
 
 ### Iterators
-Iterators are brains of the library. They are all knowing and know exactly which entities have specific components and which don't. There are 4 iterators: withNeither(), withOnly(), withAll() and withAny().
+Iterators are functions that give back entities with specific components There are 4 iterators: ***withNeither()***, ***withOnly()***, ***withAll()*** and ***withAny()***. Looking back at system description, let's say you want to get all entities that have all the following components: ***"position"***, ***"velocity"*** and  ***"keyboard_input"*** you would do something like this:
+```lua
+local return_components = true
+local filter = {"position", "velocity", "keyboard_input"}
+for entity_id, position, velocity, keyboard_input in ecs.withAll(world_id, filter, return_components) do
+  
+end
+```
 
 ## Few Examples
 
@@ -56,7 +66,7 @@ local player = ecs.newEntity(world, "player_prefab")
 ecs.addPrefab(world, player, "player_prefab")
 ```
 
-### Now that we have covered the basics, let's make this all work togheter
+### Now that we have covered the basics, let's make this all work together
 ```lua
 local ecs = require("lovelyecs")
 --prefab has to be registered before adding it to entity
