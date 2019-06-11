@@ -171,7 +171,7 @@ end
 
 
 function ecs.withNeither(world_id, forbidden_components)
-utils_ensureWorldExists(world_id)
+    utils_ensureWorldExists(world_id)
     local world_entities = worlds[world_id].entities
     local index = 0
     local entities_count = #world_entities
@@ -194,7 +194,7 @@ function ecs.withOnly(world_id, allowed_components, return_components)
     return coroutine.wrap(function()
         for entity_id = 1, #world_entities do
             local entity = world_entities[entity_id]
-            if "number" == type(entity) then
+            if REUSABLE_ENTITY ~= entity then
                 if ecs.hasOnlyComponents(world_id, entity_id, allowed_components) then
                     if return_components then
                          coroutine.yield(entity_id, ecs.getComponents(world_id, entity_id, allowed_components))
@@ -214,7 +214,7 @@ function ecs.withAll(world_id, required_components, return_components)
     return coroutine.wrap(function()
         for entity_id = 1, #world_entities do
             local entity = world_entities[entity_id]
-            if "number" == type(entity) then
+            if REUSABLE_ENTITY ~= entity then
                 if ecs.hasAllComponents(world_id, entity_id, required_components) then
                     if return_components then
                          coroutine.yield(entity_id, ecs.getComponents(world_id, entity_id, required_components))
@@ -236,7 +236,7 @@ function ecs.withAny(world_id, required_components, return_components)
     return coroutine.wrap(function()
         for entity_id = 1, #world_entities do
             local entity = world_entities[entity_id]
-            if "number" == type(entity) then
+            if REUSABLE_ENTITY ~= entity then
                 if ecs.hasAnyComponents(world_id, entity_id, required_components) then
                     if return_components then
                         coroutine.yield(entity_id, ecs.getComponents(world_id, entity_id, required_components))
