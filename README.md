@@ -45,9 +45,9 @@ ecs.addComponent(world, player, "sprite", "player.png")
 local ecs = require("lovelyecs")
 --prefab has to be registered before adding it to entity
 ecs.registerPrefab("player_prefab", {
-  "health" = 100;
-  "speed" = {x=50,y=50};
-  "sprite"= "player.png"
+  health = 100;
+  speed = {x=50,y=50};
+  sprite = "player.png"
 })
 
 local world = ecs.newWorld()
@@ -63,7 +63,7 @@ local ecs = require("lovelyecs")
 ecs.registerPrefab("player_prefab", {
   health = 100;
   speed = {x=50,y=50};
-  sprite= "player.png";
+  sprite = "player.png";
   can_move = true
 })
 
