@@ -331,10 +331,8 @@ function ecs.hasNeitherComponents(world_id, entity_id, forbidden_components)
     --entity has forbidden components
     if found_components_count > 0 then
         return false
-    --entity doesn't have any forbidden components
-    else
-        return true
     end
+    return true
 end
 
 
@@ -343,9 +341,8 @@ function ecs.hasOnlyComponents(world_id, entity_id, allowed_components)
     local entity_component_count = ecs.getComponentCount(world_id, entity_id)
     if ecs.hasAllComponents(world_id, entity_id, allowed_components) and entity_component_count == #allowed_components then
         return true
-    else
-        return false
     end
+    return false
 end
 
 
@@ -373,20 +370,13 @@ function ecs.hasAnyComponents(world_id, entity_id, required_components)
 
     if nil == required_components[1] then error("ecs.hasAnyComponents() requires atleast one component to be specified!") end
 
-    local num_of_found_components = 0
-
     for i = 1, #required_components do
         local required_component = required_components[i]
         if ecs.hasComponent(world_id, entity_id, required_component) then
-            num_of_found_components = num_of_found_components + 1
+            return true
         end
     end
-
-    if num_of_found_components >= 1 then
-       return true
-    else
-        return false
-    end
+    return false
 end
 
 
@@ -459,9 +449,8 @@ function ecs.removeAllComponents(world_id, entity_id)
     if initial_entity_component_count == removed_components_count then
         --print("removed all components successfully")
         return true
-    else
-        return false
     end
+    return false
 end
 
 
