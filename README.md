@@ -86,3 +86,6 @@ for i = 1, 307 do
   movement_system(world)
 end
 ```
+
+### Installation
+Just clone or download this repository as .zip file and extract the "lovelyecs.lua" file to location you want.
