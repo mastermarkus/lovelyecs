@@ -2,7 +2,7 @@
 
 # What is lovely-ecs?
 
-**lovely-ecs** is simple to use entity component system for Lua scripting language. Have you tried to find easy to use Lua ECS library that doesn't force you to install some third party libraries or isn't already tied to some other framework or is lacking some essential features. Well, **lovely-ecs** is the answer. lovely-ecs is single file library that works with Lua 5.1 and up.
+**lovely-ecs** is simple to use entity component system for Lua scripting language. Have you tried to find easy to use Lua ECS library that doesn't force you to install some third party libraries, isn't already tied to some other framework or isn't lacking some essential features. Well, **lovely-ecs** is the answer. lovely-ecs is single file library that works with Lua 5.1 and up.
 
 ## Basic overview
 **lovely-ecs** has 4 main types: Entities, Worlds, Systems and Prefabs. Both Worlds and Entities are just simple integer numbers, Systems that are simply functions and finally Prefabs that are just group of components. We will look into it more down below how it all works and comes togheter to give you better idea.
