@@ -38,6 +38,9 @@ local _unpack = unpack or nil
 if _unpack == nil then _unpack = table.unpack end
 if _unpack == nil then error("Can't find unpack() or table.unpack() in Lua standard library! ") end
 
+local str_format = string.format or nil
+if str_format == nil then error("Unable to find string.format in lua standard library") end
+
 --since we can't just set entity/world to be reused to nil, cause it creates hole in array, we have to set it to magic key
 local REUSABLE_ENTITY = {}
 local REUSABLE_WORLD = {}
@@ -68,6 +71,13 @@ local ecs = {}
 
 --UTILITY FUNCTIONS--
 local utils = {}
+
+
+function utils._assertf(condition, error_msg, ...)
+    if not condition then
+      error(error_msg:format(...))
+    end
+end
 
 
 function utils._worldExists(world_id)
@@ -105,13 +115,15 @@ end
 
 function utils._ensureEntityExists(world_id, entity_id, error_msg)
     utils._ensureWorldExists(world_id)
-    if false == utils._entityExists(world_id, entity_id) then error(error_msg) end
+    utils._assertf(utils._entityExists(world_id, entity_id), error_msg, entity_id)
 end
 
 
-function utils._ensureComponentIsRightType(component_name, error_msg)
+function utils._ensureComponentIsRightType(component_name)
     if type(component_name) ~= "string" then
-        error(error_msg ~= nil and error_msg or "Component_name tpye is invalid!")
+        return false
+    else
+        return true
     end
 end
 
@@ -251,7 +263,7 @@ function ecs.addComponent(world_id, entity_id, component_name, component_value)
         _storage.worlds[world_id].entities_data.componentCount[entity_id] = 1 + _storage.worlds[world_id].entities_data.componentCount[entity_id]
         success = true
     else
-        error(string.format("Trying to overwrite already existing component named -> %s!", component_name))
+        error(str_format("Trying to overwrite already existing component named -> %s!", component_name))
         --if you just want to change value of component use "ecs.setComponent()"
         success = false
     end
@@ -275,7 +287,7 @@ function ecs.addPrefab(world_id, entity_id, prefab_name, forceful)
         --if component already exists make sure that user is aware and want's to override existing component value
         else
             if forceful == nil or false == forceful then
-                error( string.format("You are trying to override existing component called %s! Use forceful=true to overide without error!", component_name) )
+                error( str_format("You are trying to override existing component called %s! Use forceful=true to overide without error!", component_name) )
             end
         end
     end
@@ -294,19 +306,20 @@ function ecs.setComponent(world_id, entity_id, component_name, component_value)
         end
     end
     if not success then
-        error( string.format("Trying to set value to component named %s, that doesn't exist!", component_name))
+        error( str_format("Trying to set value to component named %s, that doesn't exist!", component_name))
     end
 end
 
 
 function ecs.hasComponent(world_id, entity_id, component_name)
-    utils._ensureComponentIsRightType(component_name, string.format("Component type must be string but is type of %s!", type(component_name)))
+    utils._assertf(utils._ensureComponentIsRightType(component_name), "Component type must be string but is type of %s!", type(component_name))
     return nil ~= ecs.getComponent(world_id, entity_id, component_name)
 end
 
 
 function ecs.hasNeitherComponents(world_id, entity_id, forbidden_components)
     utils._ensureEntityExists(world_id, entity_id)
+
     local found_components_count = 0
 
     for _,forbidden_component_name in pairs(forbidden_components) do
@@ -356,7 +369,7 @@ end
 
 
 function ecs.hasAnyComponents(world_id, entity_id, required_components)
-    utils._ensureEntityExists(world_id, entity_id)
+    utils._assertf(utils._entityExists(world_id, entity_id), "Trying to check if non existant entity hasAnyComponents!")
 
     if nil == required_components[1] then error("ecs.hasAnyComponents() requires atleast one component to be specified!") end
 
@@ -378,8 +391,8 @@ end
 
 
 function ecs.getComponent(world_id, entity_id, component_name)
-    utils._ensureComponentIsRightType(component_name, string.format("Component type must be string but is type of %s!", type(component_name)))
-    utils._ensureEntityExists(world_id, entity_id, string.format("Trying to get component %s from entity that doesn't exist!", component_name))
+    utils._assertf(utils._ensureComponentIsRightType(component_name), "Component type must be string but is type of %s!", type(component_name))
+    utils._assertf(utils._entityExists(world_id, entity_id), "Trying to get component %s from entity that doesn't exist!", component_name)
 
     local component = nil
         if nil ~= _storage.components[world_id][component_name] then
@@ -409,8 +422,9 @@ end
 
 
 function ecs.removeComponent(world_id, entity_id, component_name)
-    utils._ensureComponentIsRightType(component_name, string.format("ecs.removeComponent() -> component_name must be of type string but is of type %s", type(component_name)))
-    utils._ensureEntityExists(world_id, entity_id, string.format("Attempting to remove component %s from entity that doesn't exist!", component_name))
+    utils._assertf(utils._ensureComponentIsRightType(component_name), "ecs.removeComponent() -> component_name must be of type string but is of type %s", type(component_name))
+    utils._assertf(utils._entityExists(world_id, entity_id), "Attempting to remove component %s from entity that doesn't exist!", component_name)
+
     local success = false
     if ecs.hasComponent(world_id, entity_id, component_name) then
         if nil ~= _storage.components[world_id][component_name][entity_id] then
@@ -427,7 +441,7 @@ end
 
 
 function ecs.removeAllComponents(world_id, entity_id)
-    utils._ensureEntityExists(world_id, entity_id, string.format("Trying to remove all components from entity %s that doesn't exist!", entity_id))
+    utils._assertf(utils._entityExists(world_id, entity_id), "Trying to remove all components from entity %s that doesn't exist!", entity_id)
     local initial_entity_component_count = ecs.getComponentCount(world_id, entity_id)
     local removed_components_count = 0
 
@@ -453,7 +467,7 @@ end
 
 function ecs.registerPrefab(prefab_name, props)
     if prefab_name == nil then error("Trying to register prefab that doesn't have prefab name specified!") end
-    if nil ~= _storage.entity_prefabs[prefab_name] then error( string.format("Trying to register prefab named %s, that already exists!", prefab_name)) end
+    utils._assertf(not (nil ~= _storage.entity_prefabs[prefab_name]), "Trying to register prefab named %s, that already exists!", prefab_name)
 
     _storage.entity_prefabs[prefab_name] = {}
     for key, val in pairs(props) do
@@ -467,7 +481,7 @@ function ecs.newEntity(world_id, prefab_name)
     utils._ensureWorldExists(world_id)
     --prefab_name is optional
     if "string" == type(prefab_name) then
-        utils._ensureEntityPrefabExists(prefab_name, string.format("Trying to get entity with prefab named %s, that doesn't exists!(NOTE: use registerPrefab())", prefab_name))
+        utils._assertf( utils._prefabExists(prefab_name, "Trying to get entity with prefab named %s, that doesn't exists!(NOTE: use registerPrefab())"), prefab_name)
     end
 
     local world_entities = _storage.worlds[world_id].entities
@@ -543,7 +557,7 @@ end
 
 
 function ecs.destroyWorld(world_id)
-    utils._ensureWorldExists(world_id, string.format("You are trying to destroy world with id %s, that doesn't exist!", world_id))
+    utils._assertf( utils._worldExists(world_id), "You are trying to destroy world with id %s, that doesn't exist!", world_id)
     ecs.removeAllEntities(world_id)
     local total_world_count = utils:_getTotalWorldCount()
     if world_id == total_world_count and total_world_count > 1 then
@@ -564,7 +578,7 @@ end
 
 
 function ecs.removeEntity(world_id, entity_id)
-    utils._ensureEntityExists(world_id, entity_id, string.format("Trying to remove entity with id %s that doesn't exist!", entity_id))
+    utils._assertf(utils._entityExists(world_id, entity_id), "Trying to remove entity with id %s that doesn't exist!", entity_id)
     ecs.removeAllComponents(world_id, entity_id)
     local world_entities = _storage.worlds[world_id].entities
 
