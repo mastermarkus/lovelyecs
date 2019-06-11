@@ -322,12 +322,12 @@ function ecs.hasNeitherComponents(world_id, entity_id, forbidden_components)
 
     local found_components_count = 0
 
-    for _,forbidden_component_name in pairs(forbidden_components) do
+    for i = 1, #forbidden_components do
+        local forbidden_component_name = forbidden_components[i]
         if ecs.hasComponent(world_id, entity_id, forbidden_component_name) then
             found_components_count = found_components_count + 1
         end
     end
-
     --entity has forbidden components
     if found_components_count > 0 then
         return false
@@ -607,7 +607,7 @@ function ecs.removeAllEntities(world_id)
     local world_entities = worlds[world_id].entities
     for entity_id = 1, #world_entities do
         local entity = world_entities[entity_id]
-        if "number" == type(entity) then
+        if REUSABLE_ENTITY ~= entity then
            ecs.removeEntity(world_id, entity_id)
         end
     end
