@@ -4,6 +4,10 @@
 --Github: https://github.com/mastermarkus/lovelyecs
 -- For bug reports or feature requests go to link above
 
+--- @module lovely-ecs
+-- @author Markus Septer
+-- @license MIT
+-- @copyright 2019
 
 --[[
 MIT License
@@ -155,15 +159,20 @@ end
 
 
 function ecs.withNeither(world_id, forbidden_components)
-    utils._ensureWorldExists(world_id)
+utils._ensureWorldExists(world_id)
     local world_entities = _storage.worlds[world_id].entities
-    return coroutine.wrap(function()
-        for entity_id =  1, #world_entities do
-            if ecs.hasNeitherComponents(world_id, entity_id, forbidden_components) then
-                coroutine.yield(entity_id)
+    local index = 0
+    local entities_count = #world_entities
+    local iter = function ()
+        while index < entities_count do
+            index = index + 1
+            local entity_id = world_entities[index]
+                if ecs.hasNeitherComponents(world_id, entity_id, forbidden_components) then
+                    return entity_id
+                end
             end
-        end
-    end)
+    end
+    return iter
 end
 
 
