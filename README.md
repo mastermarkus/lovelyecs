@@ -24,11 +24,11 @@ World is container where entities live in. You can create multiple worlds.
 
 
 ### System
-System is piece of code or function that goes through all the entities in world and components using what's called **Iterator(s)**, it's very important because it's what give's life to your entitity. Systems checks entities what components they have and acts accordingly. For example you could have system called "player_movement", this system would be responsible for getting all the entities with components named "keyboard_input", "position" and "velocity" and moveing the player everytime they press some arrow-key on keyboard. Remember you have full control what you want to name your component's, these were just made up component names.
+System is piece of code or function that goes through all the entities in world and components using what's called **Iterator(s)**. Systems checks entities what components they have and acts accordingly. For example you could have system called ***"player_movement"***. This system would be responsible for getting all the entities with components named ***"keyboard_input"***, ***"position"*** and ***"velocity"*** and moving the player everytime they press some arrow-key on keyboard. Remember you have full control what you want to name your component's, these were just made up component names.
 
 
 ### Iterators
-Iterators are functions that give back entities with specific components There are 4 iterators: ***withNeither()***, ***withOnly()***, ***withAll()*** and ***withAny()***. Looking back at system description, let's say you want to get all entities that have all the following components: ***"position"***, ***"velocity"*** and  ***"keyboard_input"*** you would do something like this:
+Iterators are functions that give back entities with specific components. There are 4 iterators: ***withNeither()***, ***withOnly()***, ***withAll()*** and ***withAny()***. Looking back at system description, let's say you want to get all entities that have all the following components: ***"position"***, ***"velocity"*** and  ***"keyboard_input"*** you would do something like this:
 ```lua
 local return_components = true
 local filter = {"position", "velocity", "keyboard_input"}
