@@ -5,7 +5,7 @@
 **lovely-ecs** is simple to use entity component system for Lua scripting language. Have you tried to find easy to use Lua ECS library that doesn't force you to install some third party libraries or isn't already tied to some other framework or is lacking some essential features. Well, **lovely-ecs** is the answer. lovely-ecs is single file library that works with Lua 5.1 and up.
 
 ## Basic overview
-**lovely-ecs** has 5 main types: Entities, Worlds, Systems and Prefabs. Both Worlds and Entities are just simple integer numbers, Systems could be simple function's(lovely-ecs doesn't force default way of setting up system's like many other ecs libraries) and finally Prefabs that are just group of components. We will look into it more down below how it all works and comes togheter to give you better idea.
+**lovely-ecs** has 4 main types: Entities, Worlds, Systems and Prefabs. Both Worlds and Entities are just simple integer numbers, Systems that are simply functions and finally Prefabs that are just group of components. We will look into it more down below how it all works and comes togheter to give you better idea.
 
 
 ### Entity
@@ -55,20 +55,22 @@ local world = ecs.newWorld()
 local player = ecs.newEntity(world, "player_prefab")
 ecs.addPrefab(world, player, "player_prefab")
 ```
-### Now that we have covered the basicsm let's make this all work togheter
+
+### Now that we have covered the basics, let's make this all work togheter
 ```lua
 local ecs = require("lovelyecs")
 --prefab has to be registered before adding it to entity
 ecs.registerPrefab("player_prefab", {
-  "health" = 100;
-  "speed" = {x=50,y=50};
-  "sprite"= "player.png",
-  "can_move = true,
+  health = 100;
+  speed = {x=50,y=50};
+  sprite= "player.png";
+  can_move = true
 })
 
 --system is just function, i recommend to move each of the systems to different module files
 local function movement_system(world_id)
   local return_components = true
+  --components get returned in the order, whicht hey were specified in filter table
   for entity_id, speed, can_move in ecs.withAll(world_id, {"speed", "can_move"}, return_components)do
       if speed.x > 30 then
         ecs.setComponent(world_id, entity_id, "can_move", false)
@@ -77,7 +79,6 @@ local function movement_system(world_id)
 end
 
 local world = ecs.newWorld()
---we can pass prefab directly to ecs.newEntity as second argument or add it later
 local player = ecs.newEntity(world, "player_prefab")
 
 --this would be your update/render or some other loop or event
