@@ -24,75 +24,55 @@ World is container where entities live in. You can create multiple worlds.
 
 
 ### System
-System is piece of code or function that goes through all the entities in world and components using what's called **Iterator(s)**. Systems checks entities what components they have and acts accordingly. For example you could have system called ***"player_movement"***. This system would be responsible for getting all the entities with components named ***"keyboard_input"***, ***"position"*** and ***"velocity"*** and moving the player everytime they press some arrow-key on keyboard. Remember you have full control what you want to name your component's, these were just made up component names.
+System is piece of code or function that goes through all the entities in world and components using what's called **Iterator(s)**. System(s) checks entities what components they have and acts accordingly. For example you could have system called ***"player_movement"***. This system would be responsible for getting all the entities with components named ***"keyboard_input"***, ***"position"*** and ***"velocity"*** and moving the player everytime they press some arrow-key on keyboard. Remember you have full control what you want to name your component's, these were just made up component names.
 
 
 ### Iterators
 Iterators are functions that give back entities with specific components. There are 4 iterators: ***withNeither()***, ***withOnly()***, ***withAll()*** and ***withAny()***. Looking back at system description, let's say you want to get all entities that have all the following components: ***"position"***, ***"velocity"*** and  ***"keyboard_input"*** you would do something like this:
 ```lua
+local ecs = require("loveleyecs")
+
+--you can add new component to entity with ecs.addComponent()
+--let's create prefab, that way we don't have to manually add each component one by one
+ecs.registerPrefab("player_prefab", {
+  position = {x = 50, y = 50};
+  velocity = {x = 0, y = 0};
+  keyboard_input = {
+    keys_down = {
+    arrow_up = false,
+    arrow_down = true,
+    arrow_left = false,
+    arrow_right = false
+    }
+  }
+})
+
+--let's create world where entities live in
+local world= ecs.newWorld()
+
+--let's add some entities to world
+local entity_1 = ecs.newEntity(world)
+local entity_2 = ecs.newEntity(world)
+
+--now we created 2 entities that both have: position, velocity and keyboard_input components
+--what if we want to change one component a little bit, we can do it using ecs.setComponent() function
+--let's make entity_2 a little bit faster than entity_1
+ecs.setComponent(world, entity_2, "velocity", {x =3200, y = 3300})
+
+--if return_component's is true it's gonna directly return etity_id + (the components) specified in filter
 local return_components = true
 local filter = {"position", "velocity", "keyboard_input"}
-for entity_id, position, velocity, keyboard_input in ecs.withAll(world_id, filter, return_components) do
-  
-end
-```
 
-## Few Examples
-
-### Creating Entity and adding components
-```lua
-local ecs = require("lovelyecs")
-local world = ecs.newWorld()
---to create new entity you must have already created world before
-local player = ecs.newEntity(world)
-ecs.addComponent(world, player, "health", 100)
-ecs.addComponent(world, player, "speed", {x=50,y=50})
-ecs.addComponent(world, player, "sprite", "player.png")
-```
-
-### Now imagine your entity had over 20 or more components, adding all these components manually would be very tedious and time consuming. Luckily there's better way, this is where the prefabs come in.
-```lua
-local ecs = require("lovelyecs")
---prefab has to be registered before adding it to entity
-ecs.registerPrefab("player_prefab", {
-  health = 100;
-  speed = {x=50,y=50};
-  sprite = "player.png"
-})
-
-local world = ecs.newWorld()
---we can pass prefab directly to ecs.newEntity as second argument or add it later
-local player = ecs.newEntity(world, "player_prefab")
-ecs.addPrefab(world, player, "player_prefab")
-```
-
-### Now that we have covered the basics, let's make this all work together
-```lua
-local ecs = require("lovelyecs")
---prefab has to be registered before adding it to entity
-ecs.registerPrefab("player_prefab", {
-  health = 100;
-  speed = {x=50,y=50};
-  sprite = "player.png";
-  can_move = true
-})
-
---system is just function, i recommend to move each of the systems to different module files
 local function movement_system(world_id)
-  local return_components = true
-  --components get returned in the order, whicht hey were specified in filter table
-  for entity_id, speed, can_move in ecs.withAll(world_id, {"speed", "can_move"}, return_components)do
-      if speed.x > 30 then
-        ecs.setComponent(world_id, entity_id, "can_move", false)
-      end
+  for entity_id, position, velocity, keyboard_input in ecs.withAll(world_id, filter, return_components) do  
+   if true == keyboard_input.keys_down.arrow_down then
+    ecs.setComponent(world_id, entity_id, "velocity", {x=velocity.x, y = velocity.y + 20})
+   end
   end
 end
 
-local world = ecs.newWorld()
-local player = ecs.newEntity(world, "player_prefab")
-
---this would be your update/render or some other loop or event
-for i = 1, 307 do
+--pseudo game loop code
+while gameIsRunning() do
   movement_system(world)
 end
 ```
