@@ -1,3 +1,4 @@
+![Image description](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)
 # lovelyecs
 
 # What is Entity component system in the first place?
