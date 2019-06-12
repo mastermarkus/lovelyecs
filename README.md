@@ -1,14 +1,17 @@
-# lovely-ecs
+[![Build Status](https://travis-ci.org/mastermarkus/lovelyecs.png?branch=master)](https://travis-ci.org/mastermarkus/lovelyecs)
+![Image description](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)
+
+# lovelyecs
 
 # What is Entity component system in the first place?
 If you are new to ECS, take a look at Wikipedia page: https://en.wikipedia.org/wiki/Entity_component_system. If you still didn't understand what it is, i recommend to keep reading and there are code snippets down below. Also there's ***examples/*** folder in the repository.
 
-# What is lovely-ecs?
+# What is lovelyecs?
 
-**lovely-ecs** is simple to use entity component system for Lua scripting language. Have you tried to find easy to use Lua ECS library that doesn't force you to install some third party libraries, isn't already tied to some other framework or isn't lacking some essential features. Well, **lovely-ecs** is the answer. lovely-ecs is single file library that works with Lua 5.1 and up.
+**lovelyecs** is simple to use entity component system for Lua scripting language. Have you tried to find easy to use Lua ECS library that doesn't force you to install some third party libraries, isn't already tied to some other framework or isn't lacking some essential features. Well, **lovelyecs** is the answer. lovelyecs is single file library that works with Lua 5.1 and up.
 
 ## Basic overview
-**lovely-ecs** has 4 main types: Entities, Components, Worlds and Systems.
+**lovelyecs** has 4 main types: Entities, Components, Worlds and Systems.
 
 
 ### Entity
@@ -16,7 +19,7 @@ In game Entity could really be anything; Animal, Monster, NPC and also Player co
 
 
 ### Components
-Component is just variable with value that's part of entity. You are free to create any components with any name and value you like. ***lovely-ecs*** also allows you to group components together and create prefabs. Example components: Position, Velocity, Health etc...
+Component is just variable with value that's part of entity. You are free to create any components with any name and value you like. ***lovelyecs*** also allows you to group components together and create prefabs. Example components: Position, Velocity, Health etc...
 
 
 ### World
@@ -51,8 +54,8 @@ ecs.registerPrefab("player_prefab", {
 local world= ecs.newWorld()
 
 --let's add some entities to world
-local entity_1 = ecs.newEntity(world)
-local entity_2 = ecs.newEntity(world)
+local entity_1 = ecs.newEntity(world, "player_prefab")
+local entity_2 = ecs.newEntity(world, "player_prefab")
 
 --now we created 2 entities that both have: position, velocity and keyboard_input components
 --what if we want to change one component a little bit, we can do it using ecs.setComponent() function
@@ -81,4 +84,4 @@ end
 Just clone or download this repository as .zip file and extract the "lovelyecs.lua" file to location you want.
 
 ### Testing
-lovely-ecs uses [luaunit](https://github.com/bluebird75/luaunit) for testing. To run the tests, download Lua and [luaunit](https://github.com/bluebird75/luaunit), copy or take out the "luaunit.lua" file. Now run the lua command inside you project root folder followed by path to "test_lovelyecs.lua". For example if your project root folder name is "game" and both luaunit.lua and lovelyecs.lua are under folder called "thirdparty", run the following command -> "lua .\thirdparty\lovelyecs\test_lovelyecs.lua"
+lovelyecs uses [luaunit](https://github.com/bluebird75/luaunit) for testing. To run the tests, download Lua and [luaunit](https://github.com/bluebird75/luaunit), copy or take out the "luaunit.lua" file. Now run the lua command inside you project root folder followed by path to "test_lovelyecs.lua". For example if your project root folder name is "game" and both luaunit.lua and lovelyecs.lua are under folder called "thirdparty", run the following command -> "lua .\thirdparty\lovelyecs\test_lovelyecs.lua"
