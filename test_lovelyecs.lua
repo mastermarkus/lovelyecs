@@ -1,7 +1,5 @@
-local ecs = require("thirdparty.lovelyecs")
-local lu = require("thirdparty.luaunit")
-
-
+local ecs = require("lovelyecs")
+local lu = require("luaunit")
 
 
 TestComponentCount = {}
