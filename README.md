@@ -1,4 +1,6 @@
+[![Build Status](https://travis-ci.org/mastermarkus/lovelyecs.png?branch=master)](https://travis-ci.org/mastermarkus/lovelyecs)
 ![Image description](http://img.shields.io/badge/Licence-MIT-brightgreen.svg)
+
 # lovelyecs
 
 # What is Entity component system in the first place?
