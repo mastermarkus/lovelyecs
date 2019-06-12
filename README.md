@@ -51,8 +51,8 @@ ecs.registerPrefab("player_prefab", {
 local world= ecs.newWorld()
 
 --let's add some entities to world
-local entity_1 = ecs.newEntity(world)
-local entity_2 = ecs.newEntity(world)
+local entity_1 = ecs.newEntity(world, "player_prefab")
+local entity_2 = ecs.newEntity(world, "player_prefab")
 
 --now we created 2 entities that both have: position, velocity and keyboard_input components
 --what if we want to change one component a little bit, we can do it using ecs.setComponent() function
