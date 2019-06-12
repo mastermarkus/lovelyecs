@@ -68,9 +68,6 @@ local utils_ensureEntityPrefabExists
 local utils_incrementTotalEntityCount
 local utils_decrementTotalEntityCount
 local utils_getTotalEntityCount
-local utils_incrementTotalWorldCount
-local utils_decrementTotalWorldCount
-local utils_getTotalWorldCount
 
 
 function utils_assertf(condition, error_msg, ...)
@@ -84,7 +81,7 @@ function utils_worldExists(world_id)
     if "number" ~= type(world_id) then error("You must pass in world_id type that's number, but passed in type is " .. type(world_id)) end
     local world_exists = false
     local world = worlds[world_id] or nil
-    if world_id > 0 and world_id <= utils_getTotalWorldCount() then
+    if world_id > 0 and world_id <= total_world_count then
         if "table" == type(world) and REUSABLE_WORLD ~= world then
             world_exists = true
         end
@@ -154,20 +151,6 @@ function utils_getTotalEntityCount(world_id)
     return worlds[world_id].total_entity_count
 end
 
-
-function utils_incrementTotalWorldCount()
-    total_world_count = 1 + total_world_count
-end
-
-
-function utils_decrementTotalWorldCount()
-    total_world_count = total_world_count - 1
-end
-
-
-function utils_getTotalWorldCount()
-    return total_world_count
-end
 
 
 function ecs.withNeither(world_id, forbidden_components)
@@ -531,8 +514,8 @@ function ecs.newWorld()
     end
 
     if nil == new_world_id  then
-        utils_incrementTotalWorldCount()
-        new_world_id = utils_getTotalWorldCount()
+        total_world_count = total_world_count + 1
+        new_world_id = total_world_count
     end
     active_world_count = 1 + active_world_count
     worlds[new_world_id] = world
@@ -548,10 +531,9 @@ end
 function ecs.destroyWorld(world_id)
     utils_assertf( utils_worldExists(world_id), "You are trying to destroy world with id %s, that doesn't exist!", world_id)
     ecs.removeAllEntities(world_id)
-    local total_world_count = utils_getTotalWorldCount()
     if world_id == total_world_count and total_world_count > 1 then
         worlds[world_id] = nil
-        utils_decrementTotalWorldCount()
+        total_world_count = total_world_count - 1
     elseif world_id < total_world_count then
         worlds[world_id] = REUSABLE_WORLD
     end
