@@ -1,0 +1,771 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#World_functions">World functions </a></li>
+<li><a href="#Entity_functions">Entity functions </a></li>
+<li><a href="#Prefab_functions">Prefab functions </a></li>
+<li><a href="#Query_functions">Query functions </a></li>
+<li><a href="#Validation_functions">Validation functions </a></li>
+<li><a href="#Storage_functions">Storage functions </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>lovelyecs.lua</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>lovelyecs.lua</code></h1>
+<p>Entity component system for Lua scripting language.</p>
+<p></p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2019</li>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: Markus Septer</li>
+    </ul>
+
+
+<h2><a href="#World_functions">World functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.newWorld">lovelyecs.newWorld ()</a></td>
+	<td class="summary">Creates new world and returns it's id.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.newEntity">lovelyecs.newEntity (world_id, optional_prefab_name)</a></td>
+	<td class="summary">Creates new entity into specified world and returns it's id.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.removeEntity">lovelyecs.removeEntity (world_id, entity_id)</a></td>
+	<td class="summary">Removes entity entity from world and returns it's id.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.removeAllEntities">lovelyecs.removeAllEntities (world_id)</a></td>
+	<td class="summary">Removes all entities from given world.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.getEntityCount">lovelyecs.getEntityCount (world_id)</a></td>
+	<td class="summary">Returns number of entities in given world.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.getWorldCount">lovelyecs.getWorldCount ()</a></td>
+	<td class="summary">Retuns the number of world's that exist.</td>
+	</tr>
+</table>
+<h2><a href="#Entity_functions">Entity functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.addComponent">lovelyecs.addComponent (world_id, entity_id, name, value)</a></td>
+	<td class="summary">Adds component to entity with name and value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.getComponent">lovelyecs.getComponent (world_id, entity_id, component_name)</a></td>
+	<td class="summary">Returns component value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.getComponents">lovelyecs.getComponents (world_id, entity_id, component_table)</a></td>
+	<td class="summary">Returns multiple component values.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.removeComponent">lovelyecs.removeComponent (world_id, entity_id, name)</a></td>
+	<td class="summary">Removes component from entity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.removeAllComponents">lovelyecs.removeAllComponents (world_id, entity_id)</a></td>
+	<td class="summary">Removes all components from entity.</td>
+	</tr>
+</table>
+<h2><a href="#Prefab_functions">Prefab functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.registerPrefab">lovelyecs.registerPrefab (prefab_name, table_of_components)</a></td>
+	<td class="summary">Packs components into prefab</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.addPrefab">lovelyecs.addPrefab (world_id, entity_id, prefab_name, is_forceful)</a></td>
+	<td class="summary">Adds prefab with packed components to entity.</td>
+	</tr>
+</table>
+<h2><a href="#Query_functions">Query functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.withNeither">lovelyecs.withNeither (world_id, entity_id, filter, return_components)</a></td>
+	<td class="summary">Returns entities with neither components</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.withOnly">lovelyecs.withOnly (world_id, entity_id, filter, return_components)</a></td>
+	<td class="summary">Returns entities with only components</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.withAll">lovelyecs.withAll (world_id, entity_id, filter, return_components)</a></td>
+	<td class="summary">Returns entities with all components</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.withAny">lovelyecs.withAny (world_id, entity_id, filter, return_components)</a></td>
+	<td class="summary">Returns entities with any components</td>
+	</tr>
+</table>
+<h2><a href="#Validation_functions">Validation functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.hasNeitherComponents">lovelyecs.hasNeitherComponents (world_id, entity_id, components_table)</a></td>
+	<td class="summary">Has neither components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.hasOnlyComponents">lovelyecs.hasOnlyComponents (world_id, entity_id, components_table)</a></td>
+	<td class="summary">Has only components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.hasAllComponents">lovelyecs.hasAllComponents (world_id, entity_id, components_table)</a></td>
+	<td class="summary">Has all components.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.hasAnyComponents">lovelyecs.hasAnyComponents (world_id, entity_id, components_table)</a></td>
+	<td class="summary">Has any components.</td>
+	</tr>
+</table>
+<h2><a href="#Storage_functions">Storage functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#lovelyecs.eraseStorage">lovelyecs.eraseStorage ()</a></td>
+	<td class="summary">NOTE: use with caution, used mostly for testing purposes.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="World_functions"></a>World functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lovelyecs.newWorld"></a>
+    <strong>lovelyecs.newWorld ()</strong>
+    </dt>
+    <dd>
+    Creates new world and returns it's id.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        world_id
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.newEntity"></a>
+    <strong>lovelyecs.newEntity (world_id, optional_prefab_name)</strong>
+    </dt>
+    <dd>
+    Creates new entity into specified world and returns it's id.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">optional_prefab_name</span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        entity_id
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.removeEntity"></a>
+    <strong>lovelyecs.removeEntity (world_id, entity_id)</strong>
+    </dt>
+    <dd>
+    Removes entity entity from world and returns it's id.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        entity_id
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.removeAllEntities"></a>
+    <strong>lovelyecs.removeAllEntities (world_id)</strong>
+    </dt>
+    <dd>
+    Removes all entities from given world.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.getEntityCount"></a>
+    <strong>lovelyecs.getEntityCount (world_id)</strong>
+    </dt>
+    <dd>
+    Returns number of entities in given world.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.getWorldCount"></a>
+    <strong>lovelyecs.getWorldCount ()</strong>
+    </dt>
+    <dd>
+    Retuns the number of world's that exist.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Entity_functions"></a>Entity functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lovelyecs.addComponent"></a>
+    <strong>lovelyecs.addComponent (world_id, entity_id, name, value)</strong>
+    </dt>
+    <dd>
+    Adds component to entity with name and value.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">name</span>
+
+        </li>
+        <li><span class="parameter">value</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.getComponent"></a>
+    <strong>lovelyecs.getComponent (world_id, entity_id, component_name)</strong>
+    </dt>
+    <dd>
+    Returns component value.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">component_name</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.getComponents"></a>
+    <strong>lovelyecs.getComponents (world_id, entity_id, component_table)</strong>
+    </dt>
+    <dd>
+    Returns multiple component values.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">component_table</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.removeComponent"></a>
+    <strong>lovelyecs.removeComponent (world_id, entity_id, name)</strong>
+    </dt>
+    <dd>
+    Removes component from entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">name</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.removeAllComponents"></a>
+    <strong>lovelyecs.removeAllComponents (world_id, entity_id)</strong>
+    </dt>
+    <dd>
+    Removes all components from entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Prefab_functions"></a>Prefab functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lovelyecs.registerPrefab"></a>
+    <strong>lovelyecs.registerPrefab (prefab_name, table_of_components)</strong>
+    </dt>
+    <dd>
+    Packs components into prefab
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">prefab_name</span>
+
+        </li>
+        <li><span class="parameter">table_of_components</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.addPrefab"></a>
+    <strong>lovelyecs.addPrefab (world_id, entity_id, prefab_name, is_forceful)</strong>
+    </dt>
+    <dd>
+    Adds prefab with packed components to entity.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">prefab_name</span>
+
+        </li>
+        <li><span class="parameter">is_forceful</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Query_functions"></a>Query functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lovelyecs.withNeither"></a>
+    <strong>lovelyecs.withNeither (world_id, entity_id, filter, return_components)</strong>
+    </dt>
+    <dd>
+    Returns entities with neither components
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">filter</span>
+
+        </li>
+        <li><span class="parameter">return_components</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.withOnly"></a>
+    <strong>lovelyecs.withOnly (world_id, entity_id, filter, return_components)</strong>
+    </dt>
+    <dd>
+    Returns entities with only components
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">filter</span>
+
+        </li>
+        <li><span class="parameter">return_components</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.withAll"></a>
+    <strong>lovelyecs.withAll (world_id, entity_id, filter, return_components)</strong>
+    </dt>
+    <dd>
+    Returns entities with all components
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">filter</span>
+
+        </li>
+        <li><span class="parameter">return_components</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.withAny"></a>
+    <strong>lovelyecs.withAny (world_id, entity_id, filter, return_components)</strong>
+    </dt>
+    <dd>
+    Returns entities with any components
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">filter</span>
+
+        </li>
+        <li><span class="parameter">return_components</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Validation_functions"></a>Validation functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lovelyecs.hasNeitherComponents"></a>
+    <strong>lovelyecs.hasNeitherComponents (world_id, entity_id, components_table)</strong>
+    </dt>
+    <dd>
+    Has neither components.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">components_table</span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true or false
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.hasOnlyComponents"></a>
+    <strong>lovelyecs.hasOnlyComponents (world_id, entity_id, components_table)</strong>
+    </dt>
+    <dd>
+    Has only components.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">components_table</span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true or false
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.hasAllComponents"></a>
+    <strong>lovelyecs.hasAllComponents (world_id, entity_id, components_table)</strong>
+    </dt>
+    <dd>
+    Has all components.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">components_table</span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true or false
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "lovelyecs.hasAnyComponents"></a>
+    <strong>lovelyecs.hasAnyComponents (world_id, entity_id, components_table)</strong>
+    </dt>
+    <dd>
+    Has any components.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">world_id</span>
+
+        </li>
+        <li><span class="parameter">entity_id</span>
+
+        </li>
+        <li><span class="parameter">components_table</span>
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true or false
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Storage_functions"></a>Storage functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "lovelyecs.eraseStorage"></a>
+    <strong>lovelyecs.eraseStorage ()</strong>
+    </dt>
+    <dd>
+    NOTE: use with caution, used mostly for testing purposes.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-06-12 19:53:58 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
