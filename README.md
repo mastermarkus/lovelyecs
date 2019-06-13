@@ -58,9 +58,9 @@ local entity_1 = ecs.newEntity(world, "player_prefab")
 local entity_2 = ecs.newEntity(world, "player_prefab")
 
 --now we created 2 entities that both have: position, velocity and keyboard_input components
---what if we want to change one component a little bit, we can do it using ecs.setComponent() function
+--what if we want to change one component a little bit, we can do it using ecs.changeComponent() function
 --let's make entity_2 a little bit faster than entity_1
-ecs.setComponent(world, entity_2, "velocity", {x =3200, y = 3300})
+ecs.changeComponent(world, entity_2, "velocity", {x =3200, y = 3300})
 
 --if return_component's is true it's gonna directly return entity_id + (the components) specified in filter
 local return_components = true
@@ -69,7 +69,7 @@ local filter = {"position", "velocity", "keyboard_input"}
 local function movement_system(world_id)
   for entity_id, position, velocity, keyboard_input in ecs.withAll(world_id, filter, return_components) do  
    if true == keyboard_input.keys_down.arrow_down then
-    ecs.setComponent(world_id, entity_id, "velocity", {x=velocity.x, y = velocity.y + 20})
+    ecs.changeComponent(world_id, entity_id, "velocity", {x=velocity.x, y = velocity.y + 20})
    end
   end
 end
