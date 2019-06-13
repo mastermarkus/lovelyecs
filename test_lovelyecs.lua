@@ -513,7 +513,7 @@ Test_getWorlCount = {}
         lu.assertEquals(ecs.getWorldCount(), 1)
     end
 
-local Test_removeAllEntities = {}
+Test_removeAllEntities = {}
     function Test_removeAllEntities:test1()
         ecs.eraseStorage()
         local num_of_entities_to_create = 69
@@ -522,10 +522,60 @@ local Test_removeAllEntities = {}
         for entity_id = 1, num_of_entities_to_create do
             ecs.newEntity(world)
         end
-        lu.assertEquals(ecs.getEntityCount(), 69)
+        lu.assertEquals(ecs.getEntityCount(world), 69)
         ecs.removeAllEntities(world)
-        lu.assertEquals(ecs.getEntityCount(), 0)
+        lu.assertEquals(ecs.getEntityCount(world), 0)
     end
+
+
+Test_addComponent = {}
+    --try to overwrite already existing component, shouldnt be possible with addComponent()
+    function Test_addComponent:test1()
+        ecs.eraseStorage()
+        local world = ecs.newWorld()
+        local e1 = ecs.newEntity(world)
+        ecs.addComponent(world, e1, "velocity", {x=100,y=100})
+        --false - means pcall() threw error as it should
+        lu.assertEquals(pcall(ecs.addComponent, world, e1, "velocity", {x=100,y=100}), false)
+    end
+
+
+Test_changeComponent = {}
+    function Test_changeComponent:test1()
+        ecs.eraseStorage()
+        local world = ecs.newWorld()
+        local entity = ecs.newEntity(world)
+        ecs.addComponent(world, entity, "velocity", {x=100,y=100})
+        local velocity_before = ecs.getComponent(world, entity, "velocity")
+        lu.assertEquals(velocity_before.x == 100 and velocity_before.y == 100, true)
+        ecs.changeComponent(world, entity, "velocity", {x=6900,y=6900})
+        velocity_after = ecs.getComponent(world, entity, "velocity")
+        lu.assertEquals(velocity_after.x == 6900 and velocity_after.y == 6900, true)
+    end
+
+Test_setComponent = {}
+    --add component and then overwrite it, should be successful
+    function Test_setComponent:test1()
+        ecs.eraseStorage()
+        local world = ecs.newWorld()
+        local entity = ecs.newEntity(world)
+        ecs.addComponent(world, entity, "velocity", {x=100,y=100})
+        local velocity_before = ecs.getComponent(world, entity, "velocity")
+        lu.assertEquals(velocity_before.x == 100, velocity_before.y == 100, true)
+        ecs.setComponent(world, entity, "velocity", {x=2000,y=2000})
+        velocity_after = ecs.getComponent(world, entity, "velocity")
+        lu.assertEquals(velocity_after.x == 2000 and velocity_after.y == 2000, true)
+    end
+
+    
+    function Test_setComponent:test2()
+        ecs.eraseStorage()
+        local world = ecs.newWorld()
+        local entity = ecs.newEntity(world)
+        ecs.setComponent(world, entity, "velocity", {x=100,y=100})
+        --ecs.addComponent(world, entity, "velocity", {x=100,y=100})
+    end
+
 
 local runner = lu.LuaUnit.new()
 runner:setOutputType("tap")

@@ -60,13 +60,32 @@ end
 --- Entity functions
 -- @section Entity
 
---- Adds component to entity with name and value.
+--- Adds component to entity, if it didn't exist previously.
 -- @param world_id
 -- @param entity_id
 -- @param name
 -- @param value
 function lovelyecs.addComponent()
 end
+
+
+--- Changes existing component value.
+-- @param world_id
+-- @param entity_id
+-- @param name
+-- @param value
+function lovelyecs.changeComponent()
+end
+
+
+--- If component doesn't exist creates it with specified value.
+-- @param world_id
+-- @param entity_id
+-- @param name
+-- @param value
+function lovelyecs.setComponent()
+end
+
 
 --- Returns component value.
 -- @param world_id

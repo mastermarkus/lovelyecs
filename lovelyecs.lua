@@ -91,13 +91,13 @@ end
 
 
 function utils_ensureWorldExists(world_id)
-    assert(type(world_id)=="number", 'World must be of type "number"!')
+    assert(type(world_id)=="number", 'World must be of type "number"! Did you forget to pass in World?')
     if not utils_worldExists(world_id) then error( "Trying to index world, that doesn't exist" ) end
 end
 
 
 function utils_entityExists(world_id, entity_id)
-    utils_ensureWorldExists(world_id)
+    utils_assertf( utils_worldExists(world_id), "Trying to find enttiy inside world with id %s, that doesn't exist!", world_id)
     if ( not type(entity_id) == "number" ) then error("Passed in entity must be of type number!") end
     local entity_exists = false
     if entity_id > 0 and entity_id <= utils_getTotalEntityCount(world_id) then
@@ -233,6 +233,7 @@ function ecs.withAny(world_id, required_components, return_components)
 end
 
 
+--adds component, but if it already exists doesn't overwrite it and throws error
 function ecs.addComponent(world_id, entity_id, component_name, component_value)
     utils_ensureEntityExists(world_id, entity_id, "Trying to add component to entity that doesn't exist!")
     if nil == components[world_id]                 then components[world_id] = {}                 end
@@ -251,6 +252,25 @@ function ecs.addComponent(world_id, entity_id, component_name, component_value)
         success = false
     end
     return success
+end
+
+
+--changes existing component value, component has to exist beforehand
+function ecs.changeComponent(world_id, entity_id, component_name, component_value)
+    utils_ensureEntityExists(world_id, entity_id, "Trying to change component value on entity that doesn't exist!")
+    if ecs.hasComponent(world_id, entity_id, component_name) then
+        components[world_id][component_name][entity_id] = component_value
+    else
+        error( str_format("Trying to change value of component named %s, that doesn't exist!", component_name))
+    end
+end
+
+
+--if component doesn't exist creates it and adds value
+function ecs.setComponent(world_id, entity_id, component_name, component_value)
+    utils_assertf( utils_entityExists(world_id, entity_id), "Trying to set component value on entity that doesn't exist!")
+    if not ecs.hasComponent(world_id, entity_id, component_name) then components[world_id][component_name] = {} end
+    components[world_id][component_name][entity_id] = component_value
 end
 
 
@@ -273,23 +293,6 @@ function ecs.addPrefab(world_id, entity_id, prefab_name, forceful)
                 error( str_format("You are trying to override existing component called %s! Use forceful=true to overide without error!", component_name) )
             end
         end
-    end
-end
-
-
-function ecs.setComponent(world_id, entity_id, component_name, component_value)
-    utils_ensureEntityExists(world_id, entity_id, "Trying to set component value on entity that doesn't exist!")
-    local success = false
-    if ecs.hasComponent(world_id, entity_id, component_name) then
-        if nil ~= components[world_id][component_name] then
-            if nil ~= components[world_id][component_name][entity_id] then
-                components[world_id][component_name][entity_id] = component_value
-                success = true
-            end
-        end
-    end
-    if not success then
-        error( str_format("Trying to set value to component named %s, that doesn't exist!", component_name))
     end
 end
 
@@ -364,8 +367,8 @@ end
 
 
 function ecs.getComponent(world_id, entity_id, component_name)
-    utils_assertf(utils_ensureComponentIsRightType(component_name), "Component type must be string but is type of %s!", type(component_name))
-    utils_assertf(utils_entityExists(world_id, entity_id), "Trying to get component %s from entity that doesn't exist!", component_name)
+    utils_assertf( utils_ensureComponentIsRightType(component_name), "Component type must be string but is type of %s!", type(component_name))
+    utils_assertf( utils_entityExists(world_id, entity_id), "Trying to get component %s from entity that doesn't exist!", component_name)
 
     local component = nil
         if nil ~= components[world_id][component_name] then
@@ -517,6 +520,9 @@ function ecs.newWorld()
         total_world_count = total_world_count + 1
         new_world_id = total_world_count
     end
+
+    --initialize components table
+    components[new_world_id] = {}
     active_world_count = 1 + active_world_count
     worlds[new_world_id] = world
     return new_world_id
