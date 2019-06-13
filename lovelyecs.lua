@@ -453,7 +453,7 @@ function ecs.newEntity(world_id, prefab_name)
     utils_ensureWorldExists(world_id)
     --prefab_name is optional
     if "string" == type(prefab_name) then
-        utils_assertf( utils_prefabExists(prefab_name, "Trying to get entity with prefab named %s, that doesn't exists!(NOTE: use registerPrefab())"), prefab_name)
+        utils_assertf( utils_prefabExists(prefab_name), "Trying to get entity with prefab named %s, that doesn't exists!(NOTE: use registerPrefab())", prefab_name)
     end
 
     local world_entities = worlds[world_id].entities
