@@ -69,7 +69,7 @@ local filter = {"position", "velocity", "keyboard_input"}
 local function movement_system(world_id)
   for entity_id, position, velocity, keyboard_input in ecs.withAll(world_id, filter, return_components) do  
    if true == keyboard_input.keys_down.arrow_down then
-    velocity.y = velocity.y + 20}
+    velocity.y = velocity.y + 20
    end
   end
 end
