@@ -334,20 +334,13 @@ end
 
 function ecs.hasAllComponents(world_id, entity_id, required_components)
     utils_ensureEntityExists(world_id, entity_id, "Trying to check if 'all' components exist on entity that doesn't exist!")
-    local num_of_found_components = 0
-
+    
     for i = 1, #required_components do
-        local required_component_name = required_components[i]
-        if ecs.hasComponent(world_id, entity_id, required_component_name) then
-            num_of_found_components = num_of_found_components + 1
+        if not ecs.hasComponent(world_id, entity_id, required_components[i]) then
+            return false
         end
     end
-
-    if num_of_found_components == #required_components or nil == required_components[1] then
-        return true
-    else
-        return false
-    end
+    return true
 end
 
 
